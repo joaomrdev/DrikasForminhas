@@ -135,15 +135,20 @@ function Index() {
             <a key={id} href={`#${id}`}>{label}</a>
           ))}
         </nav>
-        <button
-          className="menu-button"
-          type="button"
-          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <X /> : <Menu />}
-        </button>
+        <div className="header-right">
+          <a className="header-chat" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+            <MessageCircle aria-hidden="true" /> Conversar
+          </a>
+          <button
+            className="menu-button"
+            type="button"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
         {menuOpen && (
           <nav className="mobile-nav" aria-label="Navegação para celular">
             {navigation.map(([label, id]) => (
@@ -156,7 +161,13 @@ function Index() {
       <section id="inicio" className="hero section-anchor">
         <div className="hero-copy">
           <p className="eyebrow"><span /> Feitas à mão, feitas para encantar</p>
-          <FloralMark />
+          <div className="hero-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 20" className="hero-mark-icon">
+              <path d="M16 19 V 6" />
+              <path d="M16 11 C 11 9 8 5 9 2 C 13 3 15 7 16 11 Z" />
+              <path d="M16 11 C 21 9 24 5 23 2 C 19 3 17 7 16 11 Z" />
+            </svg>
+          </div>
           <h1>Delicadeza em cada detalhe para deixar sua celebração ainda mais especial.</h1>
           <p className="hero-description">
             Forminhas artesanais que transformam a mesa de doces em parte da memória da sua festa.
