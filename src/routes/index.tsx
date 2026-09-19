@@ -18,8 +18,11 @@ import pinkAsset from "../assets/20220720_192755.jpg.asset.json";
 import blueAsset from "../assets/20220726_192208.jpg.asset.json";
 import tableAsset from "../assets/20221013_202255.jpg.asset.json";
 
-const WHATSAPP_URL = "https://wa.me/";
-const INSTAGRAM_URL = "https://www.instagram.com/";
+const WHATSAPP_URL = "https://contate.me/drikasforminhas";
+const INSTAGRAM_URL = "https://www.instagram.com/drikasforminhas/";
+const ASSET_ORIGIN = "https://id-preview--4c5e5def-a6c3-45c1-9898-63d4b6ed38ec.lovable.app";
+
+const productionImageUrl = (path: string) => `${ASSET_ORIGIN}${path}`;
 
 const navigation = [
   ["Início", "inicio"],
@@ -32,22 +35,22 @@ const navigation = [
 
 const gallery = [
   {
-    src: tableAsset.url,
+    src: productionImageUrl(tableAsset.url),
     alt: "Mesa de celebração decorada com forminhas artesanais em tons de coral, vinho e creme",
     label: "Uma celebração em cada detalhe",
   },
   {
-    src: lilacAsset.url,
+    src: productionImageUrl(lilacAsset.url),
     alt: "Forminhas artesanais lilás dispostas como flores em uma bandeja redonda",
     label: "Delicadeza em lilás",
   },
   {
-    src: pinkAsset.url,
+    src: productionImageUrl(pinkAsset.url),
     alt: "Forminhas artesanais rosa intenso com doces de chocolate",
     label: "Flores em rosa intenso",
   },
   {
-    src: blueAsset.url,
+    src: productionImageUrl(blueAsset.url),
     alt: "Forminhas artesanais azuis em uma composição de mesa de festa",
     label: "Composição em azul",
   },
@@ -132,10 +135,6 @@ function Index() {
             <a key={id} href={`#${id}`}>{label}</a>
           ))}
         </nav>
-        <a className="header-cta" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-          <MessageCircle aria-hidden="true" />
-          Conversar
-        </a>
         <button
           className="menu-button"
           type="button"
@@ -176,10 +175,10 @@ function Index() {
         </div>
         <div className="hero-visual" aria-label="Seleção de trabalhos artesanais da Drika's Forminhas">
           <div className="hero-photo hero-photo-main">
-            <img src={tableAsset.url} alt="Mesa de festa decorada com forminhas artesanais coloridas" />
+             <img src={productionImageUrl(tableAsset.url)} alt="Mesa de festa decorada com forminhas artesanais coloridas" />
           </div>
           <div className="hero-photo hero-photo-detail">
-            <img src={pinkAsset.url} alt="Detalhe de forminhas artesanais rosa com doces" />
+             <img src={productionImageUrl(pinkAsset.url)} alt="Detalhe de forminhas artesanais rosa com doces" />
           </div>
           <div className="handmade-seal"><Heart aria-hidden="true" /><span>feito com<br /><strong>carinho</strong></span></div>
           <Petal className="petal-one" />
@@ -227,7 +226,7 @@ function Index() {
 
       <section id="cores" className="materials section-anchor">
         <div className="materials-image">
-          <img src={blueAsset.url} alt="Forminhas artesanais azuis mostrando variedade de cores e acabamentos" loading="lazy" />
+           <img src={productionImageUrl(blueAsset.url)} alt="Forminhas artesanais azuis mostrando variedade de cores e acabamentos" loading="lazy" />
           <div className="materials-swatch" aria-hidden="true"><i /><i /><i /></div>
         </div>
         <div className="materials-copy">
@@ -235,7 +234,6 @@ function Index() {
           <h2>A harmonia certa para a sua mesa.</h2>
           <p>As possibilidades de cores e materiais variam conforme o modelo e a disponibilidade de produção. A escolha é conversada com cuidado para acompanhar a proposta da sua celebração.</p>
           <p className="materials-callout">Fale com a Drika para conhecer as opções disponíveis para o seu evento.</p>
-          <a className="text-link" href={WHATSAPP_URL} target="_blank" rel="noreferrer">Consultar possibilidades <ArrowRight aria-hidden="true" /></a>
         </div>
       </section>
 
@@ -254,7 +252,6 @@ function Index() {
           <Heart aria-hidden="true" />
           <p>Não há preços fixos ou pagamentos pelo site. Pedidos e orçamentos são combinados diretamente pelo WhatsApp.</p>
         </div>
-        <a className="button button-light" href={WHATSAPP_URL} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Conversar com a Drika</a>
       </section>
 
       <section id="contato" className="contact section-anchor">
@@ -278,7 +275,11 @@ function Index() {
       <footer>
         <FloralMark compact />
         <p>Forminhas artesanais para momentos especiais.</p>
-        <a href="#inicio" aria-label="Voltar ao início">Voltar ao topo <ArrowDown className="footer-arrow" aria-hidden="true" /></a>
+        <div className="footer-links">
+          <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Conversar pelo WhatsApp"><MessageCircle aria-hidden="true" /></a>
+          <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" aria-label="Ver Drika's Forminhas no Instagram"><Instagram aria-hidden="true" /></a>
+          <a className="footer-top" href="#inicio" aria-label="Voltar ao início">Voltar ao topo <ArrowDown className="footer-arrow" aria-hidden="true" /></a>
+        </div>
       </footer>
 
       {selectedImage && (
