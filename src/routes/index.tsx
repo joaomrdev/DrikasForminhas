@@ -17,6 +17,14 @@ import lilacAsset from "../assets/20220720_192707.jpg.asset.json";
 import pinkAsset from "../assets/20220720_192755.jpg.asset.json";
 import blueAsset from "../assets/20220726_192208.jpg.asset.json";
 import tableAsset from "../assets/20221013_202255.jpg.asset.json";
+import winePinkAsset from "../assets/composicao-vinho-e-rosa.jpg.asset.json";
+import ivoryDetailAsset from "../assets/detalhe-forminhas-marfim.jpg.asset.json";
+import blackWhiteAsset from "../assets/composicao-preta-branca-prata.jpg.asset.json";
+import purpleBlueAsset from "../assets/mesa-azul-roxa.webp.asset.json";
+import whiteTableAsset from "../assets/mesa-branca.jpg.asset.json";
+import pinkFloralAsset from "../assets/mesa-floral-rosa.jpg.asset.json";
+import lilacTableAsset from "../assets/mesa-lilas.jpg.asset.json";
+import pinkWineTableAsset from "../assets/mesa-rosa-e-vinho.jpg.asset.json";
 import pinkLily from "../assets/pink-lily.png";
 
 const WHATSAPP_URL = "https://contate.me/drikasforminhas";
@@ -54,6 +62,46 @@ const gallery = [
     src: productionImageUrl(blueAsset.url),
     alt: "Forminhas artesanais azuis em uma composição de mesa de festa",
     label: "Composição em azul",
+  },
+  {
+    src: productionImageUrl(winePinkAsset.url),
+    alt: "Forminhas artesanais em rosa e vinho dispostas com doces sobre uma mesa redonda",
+    label: "Tons de rosa e vinho",
+  },
+  {
+    src: productionImageUrl(pinkWineTableAsset.url),
+    alt: "Mesa de doces com forminhas artesanais em rosa claro e vinho",
+    label: "Composição em tons rosados",
+  },
+  {
+    src: productionImageUrl(pinkFloralAsset.url),
+    alt: "Mesa decorada com arranjo floral e forminhas artesanais rosa",
+    label: "Delicadeza em rosa",
+  },
+  {
+    src: productionImageUrl(blackWhiteAsset.url),
+    alt: "Mesa de doces com forminhas artesanais pretas, brancas e prateadas",
+    label: "Contrastes e acabamentos",
+  },
+  {
+    src: productionImageUrl(purpleBlueAsset.url),
+    alt: "Mesa festiva com forminhas artesanais em azul, roxo, preto e prata",
+    label: "Uma mesa cheia de cor",
+  },
+  {
+    src: productionImageUrl(lilacTableAsset.url),
+    alt: "Mesa de celebração com forminhas artesanais em diferentes tons de lilás",
+    label: "Variações em lilás",
+  },
+  {
+    src: productionImageUrl(whiteTableAsset.url),
+    alt: "Mesa de celebração clara com forminhas artesanais em branco e marfim",
+    label: "Leveza em tons claros",
+  },
+  {
+    src: productionImageUrl(ivoryDetailAsset.url),
+    alt: "Detalhe de forminhas artesanais em tom marfim reunidas em uma bandeja",
+    label: "Detalhes em marfim",
   },
 ] as const;
 
@@ -99,24 +147,41 @@ function Petal({ className }: { className: string }) {
   return <span className={`petal ${className}`} aria-hidden="true" />;
 }
 
+function LilyTransition({
+  className,
+  setRef,
+}: {
+  className: string;
+  setRef: (element: HTMLDivElement | null) => void;
+}) {
+  return (
+    <div className={`lily-transition ${className}`} ref={setRef} aria-hidden="true">
+      <div className="lily-sway">
+        <img src={pinkLily} alt="" width={1024} height={1024} loading="lazy" />
+      </div>
+    </div>
+  );
+}
+
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
-  const lilyRef = useRef<HTMLDivElement>(null);
+  const lilyRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    const lily = lilyRef.current;
-    if (!lily) return;
-
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
     const updateBloom = () => {
-      const rect = lily.getBoundingClientRect();
-      const travel = window.innerHeight + rect.height;
-      const progress = reducedMotion.matches
-        ? 1
-        : Math.min(1, Math.max(0, (window.innerHeight - rect.top) / travel));
-      lily.style.setProperty("--bloom-progress", progress.toFixed(3));
+      lilyRefs.current.forEach((lily, index) => {
+        if (!lily) return;
+        const rect = lily.getBoundingClientRect();
+        const travel = window.innerHeight + rect.height;
+        const timingOffset = index * 0.06;
+        const progress = reducedMotion.matches
+          ? 1
+          : Math.min(1, Math.max(0, (window.innerHeight - rect.top) / travel - timingOffset));
+        lily.style.setProperty("--bloom-progress", progress.toFixed(3));
+      });
       frame = 0;
     };
     const requestUpdate = () => {
@@ -246,6 +311,8 @@ function Index() {
         <div className="about-flower" aria-hidden="true"><Petal className="petal-four" /><Petal className="petal-five" /></div>
       </section>
 
+      <LilyTransition className="lily-transition-left" setRef={(element) => { lilyRefs.current[0] = element; }} />
+
       <section id="galeria" className="gallery-section section-anchor">
         <div className="section-heading centered">
           <p className="eyebrow"><span /> Nosso trabalho</p>
@@ -269,15 +336,11 @@ function Index() {
         <p className="gallery-note"><Sparkles aria-hidden="true" /> Cada encomenda ganha uma composição única, combinada diretamente com você.</p>
       </section>
 
-      <div className="lily-transition" ref={lilyRef} aria-hidden="true">
-        <div className="lily-sway">
-          <img src={pinkLily} alt="" width={1024} height={1024} loading="lazy" />
-        </div>
-      </div>
+      <LilyTransition className="lily-transition-right" setRef={(element) => { lilyRefs.current[1] = element; }} />
 
       <section id="cores" className="materials section-anchor">
-        <button className="materials-image photo-open" type="button" onClick={() => setSelected(3)} aria-label="Ampliar foto das forminhas azuis">
-           <img src={productionImageUrl(blueAsset.url)} alt="Forminhas artesanais azuis mostrando variedade de cores e acabamentos" loading="lazy" />
+        <button className="materials-image photo-open" type="button" onClick={() => setSelected(11)} aria-label="Ampliar detalhe das forminhas em tom marfim">
+           <img src={productionImageUrl(ivoryDetailAsset.url)} alt="Detalhe de forminhas artesanais em tom marfim mostrando camadas e acabamento" loading="lazy" />
         </button>
         <div className="materials-copy">
           <p className="eyebrow"><span /> Cores e materiais</p>
@@ -286,6 +349,8 @@ function Index() {
           <p className="materials-callout">Fale com a Drika para conhecer as opções disponíveis para o seu evento.</p>
         </div>
       </section>
+
+      <LilyTransition className="lily-transition-left lily-transition-soft" setRef={(element) => { lilyRefs.current[2] = element; }} />
 
       <section id="como-pedir" className="order section-anchor">
         <div className="section-heading centered">
