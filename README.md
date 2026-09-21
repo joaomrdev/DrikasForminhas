@@ -11,3 +11,18 @@ O site terá como objetivo divulgar os produtos, apresentar informações sobre 
 **Drika's Forminhas**
 
 ## Ferramentas Utilizadas
+
+- ChatGPT
+- Lovable
+- GitHub
+- Vercel
+
+## ODS
+
+**ODS 8 – Trabalho Decente e Crescimento Econômico**
+
+O projeto busca contribuir para a divulgação e modernização de um pequeno negócio local por meio de uma presença digital mais organizada.
+
+## Site Publicado
+
+https://drikas-forminhas.vercel.app
