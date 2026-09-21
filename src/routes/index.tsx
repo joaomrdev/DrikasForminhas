@@ -11,12 +11,13 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import lilacAsset from "../assets/20220720_192707.jpg.asset.json";
 import pinkAsset from "../assets/20220720_192755.jpg.asset.json";
 import blueAsset from "../assets/20220726_192208.jpg.asset.json";
 import tableAsset from "../assets/20221013_202255.jpg.asset.json";
+import pinkLily from "../assets/pink-lily.png";
 
 const WHATSAPP_URL = "https://contate.me/drikasforminhas";
 const INSTAGRAM_URL = "https://www.instagram.com/drikasforminhas/";
@@ -101,6 +102,39 @@ function Petal({ className }: { className: string }) {
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
+  const lilyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const lily = lilyRef.current;
+    if (!lily) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    const updateBloom = () => {
+      const rect = lily.getBoundingClientRect();
+      const travel = window.innerHeight + rect.height;
+      const progress = reducedMotion.matches
+        ? 1
+        : Math.min(1, Math.max(0, (window.innerHeight - rect.top) / travel));
+      lily.style.setProperty("--bloom-progress", progress.toFixed(3));
+      frame = 0;
+    };
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateBloom);
+    };
+
+    updateBloom();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    reducedMotion.addEventListener("change", requestUpdate);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      reducedMotion.removeEventListener("change", requestUpdate);
+    };
+  }, []);
 
   useEffect(() => {
     if (selected === null) return;
@@ -185,12 +219,12 @@ function Index() {
           </a>
         </div>
         <div className="hero-visual" aria-label="Seleção de trabalhos artesanais da Drika's Forminhas">
-          <div className="hero-photo hero-photo-main">
+          <button className="hero-photo hero-photo-main photo-open" type="button" onClick={() => setSelected(0)} aria-label="Ampliar foto da mesa de festa">
              <img src={productionImageUrl(tableAsset.url)} alt="Mesa de festa decorada com forminhas artesanais coloridas" />
-          </div>
-          <div className="hero-photo hero-photo-detail">
+          </button>
+          <button className="hero-photo hero-photo-detail photo-open" type="button" onClick={() => setSelected(2)} aria-label="Ampliar detalhe das forminhas rosa">
              <img src={productionImageUrl(pinkAsset.url)} alt="Detalhe de forminhas artesanais rosa com doces" />
-          </div>
+          </button>
           <div className="handmade-seal"><Heart aria-hidden="true" /><span>feito com<br /><strong>carinho</strong></span></div>
           <Petal className="petal-one" />
           <Petal className="petal-two" />
@@ -235,11 +269,16 @@ function Index() {
         <p className="gallery-note"><Sparkles aria-hidden="true" /> Cada encomenda ganha uma composição única, combinada diretamente com você.</p>
       </section>
 
-      <section id="cores" className="materials section-anchor">
-        <div className="materials-image">
-           <img src={productionImageUrl(blueAsset.url)} alt="Forminhas artesanais azuis mostrando variedade de cores e acabamentos" loading="lazy" />
-          <div className="materials-swatch" aria-hidden="true"><i /><i /><i /></div>
+      <div className="lily-transition" ref={lilyRef} aria-hidden="true">
+        <div className="lily-sway">
+          <img src={pinkLily} alt="" width={1024} height={1024} loading="lazy" />
         </div>
+      </div>
+
+      <section id="cores" className="materials section-anchor">
+        <button className="materials-image photo-open" type="button" onClick={() => setSelected(3)} aria-label="Ampliar foto das forminhas azuis">
+           <img src={productionImageUrl(blueAsset.url)} alt="Forminhas artesanais azuis mostrando variedade de cores e acabamentos" loading="lazy" />
+        </button>
         <div className="materials-copy">
           <p className="eyebrow"><span /> Cores e materiais</p>
           <h2>A harmonia certa para a sua mesa.</h2>
